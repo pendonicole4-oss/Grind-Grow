@@ -35,7 +35,7 @@ fun firstscreen(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF4F0E4))
+            .background(Color(0xFFFAF2E6))
             .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center

@@ -30,10 +30,13 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.TextButton
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.grindandgrow.data.AuthViewModel
+import com.example.grindandgrow.navigation.ROUTE_LOGIN
 
 @Composable
 fun register(navController: NavHostController) {
@@ -117,10 +120,12 @@ fun register(navController: NavHostController) {
         )
         Spacer(modifier = Modifier.height(16.dp))
 
+        val context = LocalContext.current
+        val myauth = AuthViewModel(navController, context)
+
         Button(
-            onClick = {},
+            onClick = {myauth.signup(username, email, password, confirmPassword)},
             modifier = Modifier.fillMaxWidth(),
-            enabled = username.isNotBlank() && email.isNotBlank() && password.isNotBlank() && confirmPassword.isNotBlank(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(0xFF800020),
                 contentColor = Color.Black
@@ -129,7 +134,7 @@ fun register(navController: NavHostController) {
             Text("Register")
         }
         TextButton(
-            onClick = {},
+            onClick = {navController.navigate(ROUTE_LOGIN)},
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Already have an account? Login",
