@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -69,19 +70,19 @@ fun firstscreen(navController: NavHostController) {
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Button(
+            OutlinedButton(
                 onClick = { navController.navigate(ROUTE_LOGIN) },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF800020),
+                    containerColor = Color(0xFFFAF2E6),
                     contentColor = Color.Black
                 )
             ) {
                 Text("Login")
             }
-            Button(
+            OutlinedButton(
                 onClick = { navController.navigate(ROUTE_REGISTER) },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF800020),
+                    containerColor = Color(0xFFFAF2E6),
                     contentColor = Color.Black
                 )
             ) {

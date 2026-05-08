@@ -29,6 +29,7 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.TextButton
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
@@ -127,7 +128,7 @@ fun register(navController: NavHostController) {
             onClick = {myauth.signup(username, email, password, confirmPassword)},
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF800020),
+                containerColor = Color(0xFFD6CEDD ),
                 contentColor = Color.Black
             )
         ) {

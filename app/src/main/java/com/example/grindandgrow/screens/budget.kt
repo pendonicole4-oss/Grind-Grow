@@ -26,6 +26,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedButton
@@ -51,6 +52,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.grindandgrow.models.MainViewModel
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -60,6 +64,8 @@ fun BudgetScreen( nav: NavController, vm: MainViewModel) {
     var title by remember { mutableStateOf("") }
     var amount by remember { mutableStateOf("") }
     var budgetinput by remember { mutableStateOf("") }
+    val currentdate = SimpleDateFormat("dd MMM", Locale.getDefault()).format(Date())
+
 
 
 
@@ -73,12 +79,11 @@ fun BudgetScreen( nav: NavController, vm: MainViewModel) {
                     titleContentColor = Color.Black
                 ),
                 actions = {
-                    IconButton(onClick = {}) {
-                        Icon(
-                            Icons.Default.Menu,
-                            contentDescription = "Menu",
-                        )
-                    }
+                    Text(
+                        text = currentdate,
+                        color = Color.Black,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                 }
             )
         },
@@ -129,7 +134,7 @@ fun BudgetScreen( nav: NavController, vm: MainViewModel) {
 
                 )
                 Spacer(modifier = Modifier.width(8.dp))
-                OutlinedButton(
+                Button(
                     onClick = {
                         val budget = budgetinput.toIntOrNull()
                         if (budget != null) {
@@ -138,7 +143,7 @@ fun BudgetScreen( nav: NavController, vm: MainViewModel) {
                         }
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFFDDD6FE),
+                        containerColor = Color(0xFFD6CEDD),
                         contentColor = Color.Black
                     )
                 ) {Text("Set") }
@@ -149,7 +154,7 @@ fun BudgetScreen( nav: NavController, vm: MainViewModel) {
                 Row  (
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(Color(0xFFDDD6FE))
+                        .background(Color(0xFFD6CEDD))
                         .padding(16.dp),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
@@ -195,7 +200,7 @@ fun BudgetScreen( nav: NavController, vm: MainViewModel) {
                 )
             }
             Spacer(modifier = Modifier.height(10.dp))
-            OutlinedButton(onClick = {
+            Button(onClick = {
                 val amt = amount.toIntOrNull()
                 if (title.isNotEmpty() && amt != null) {
                     vm.addTransaction(title, amt, "General")
@@ -204,7 +209,7 @@ fun BudgetScreen( nav: NavController, vm: MainViewModel) {
                 }
             },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFFDDD6FE),
+                    containerColor = Color(0xFFD6CEDD),
                     contentColor = Color.Black
                 )) {
                 Text("Add Transaction")

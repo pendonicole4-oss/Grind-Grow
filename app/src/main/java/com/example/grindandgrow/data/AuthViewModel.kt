@@ -2,7 +2,7 @@ package com.example.grindandgrow.data
 
 import android.content.Context
 import android.widget.Toast
-import androidx.navigation.NavHostController
+import androidx.navigation.NavController
 import com.example.grindandgrow.models.User
 import com.example.grindandgrow.navigation.ROUTE_LOGIN
 import com.example.grindandgrow.navigation.ROUTE_REGISTER
@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
 
-class AuthViewModel(var navController: NavHostController,var context: Context) {
+class AuthViewModel(var navController: NavController, var context: Context) {
     var mAuth = FirebaseAuth.getInstance()
 
     //register function
@@ -69,5 +69,11 @@ class AuthViewModel(var navController: NavHostController,var context: Context) {
             }
         }
 
+    }
+    //logout function
+    fun logout(){
+        mAuth.signOut()
+        navController.navigate(ROUTE_LOGIN)
+        {popUpTo(0)}
     }
 }

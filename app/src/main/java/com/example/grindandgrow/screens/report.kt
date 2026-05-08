@@ -23,17 +23,21 @@ import androidx.compose.material.icons.filled.AutoGraph
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Money
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,6 +45,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,12 +54,25 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.grindandgrow.models.MainViewModel
 import java.time.YearMonth
+import com.example.grindandgrow.data.AuthViewModel
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
 fun ReportScreen(nav: NavController, vm: MainViewModel) {
     val score = vm.getDisciplineScore()
+    val currentdate = SimpleDateFormat("dd MMM", Locale.getDefault()).format(Date())
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        vm.loadScores(context)
+        vm.saveTodayScore(context)
+    }
+
 
     Scaffold(
         containerColor = Color(0xFFFFFFF0),
@@ -66,12 +84,11 @@ fun ReportScreen(nav: NavController, vm: MainViewModel) {
                     titleContentColor = Color.Black
                 ),
                 actions = {
-                    IconButton(onClick = {}) {
-                        Icon(
-                            Icons.Default.Menu,
-                            contentDescription = "Menu",
-                        )
-                    }
+                    Text(
+                        text = currentdate,
+                        color = Color.Black,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                 }
             )
         },
@@ -134,19 +151,6 @@ fun ReportScreen(nav: NavController, vm: MainViewModel) {
 
             // Monday = 1 ... Sunday = 7
             val startOffset = firstDayOfMonth.dayOfWeek.value - 1
-
-            // Example scores
-            val scores = mapOf(
-                1 to 70,
-                2 to 85,
-                3 to 60,
-                4 to 90,
-                5 to 75,
-                6 to 95,
-                7 to 80,
-                8 to 77,
-                9 to 88
-            )
 
             val daysOfWeek = listOf(
                 "Mon", "Tue", "Wed",
@@ -243,14 +247,15 @@ fun ReportScreen(nav: NavController, vm: MainViewModel) {
                     items(daysInMonth) { index ->
 
                         val day = index + 1
-                        val score = scores[day]
+                        val dateKey = currentMonth.atDay(day).toString()
+                        val score = vm.dailyScores[dateKey]
 
                         val backgroundColor =
                             when {
                                 score == null -> Color(0xFFF5F5F5)
-                                score >= 85 -> Color(0xFF4CAF50)
-                                score >= 70 -> Color(0xFFA5D6A7)
-                                else -> Color(0xFFEF9A9A)
+                                score >= 85 -> Color(0xFFA5D6A7)
+                                score >= 70 -> Color(0xFFFFD1A6)
+                                else -> Color(0xFFF7B2AD)
                             }
 
                         Card(
@@ -296,10 +301,30 @@ fun ReportScreen(nav: NavController, vm: MainViewModel) {
                     }
                 }
             }
+            val context = LocalContext.current
+            val myauth = AuthViewModel(nav, context)
+            //  Logout Button
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Bottom,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                OutlinedButton(
+                    onClick = { myauth.logout() },
+
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFFFFFFF0),
+                        contentColor = Color.Black
+                    )
+                ) {
+                    Text("Logout")
+                }
+            }
 
 
         }
     }
+
 }
 
 @Preview(showBackground = true)

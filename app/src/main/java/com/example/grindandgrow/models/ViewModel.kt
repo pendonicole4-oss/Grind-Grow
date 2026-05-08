@@ -1,17 +1,36 @@
 package com.example.grindandgrow.models
 
+import android.content.Context
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 class MainViewModel: ViewModel() {
     var habits = mutableStateListOf<Habit>()
 
     var transactions = mutableStateListOf<Transaction>()
+
+    var dailyScores = mutableStateMapOf<String, Int>()
+
+    fun saveTodayScore(context: Context) {
+        val sharedPreferences = context.getSharedPreferences("daily_scores", Context.MODE_PRIVATE)
+        val today = LocalDate.now().toString()
+        val score = getDisciplineScore().toInt()
+        dailyScores[today] = score
+        sharedPreferences.edit().putInt(today, score).apply()
+    }
+
+    fun loadScores(context: Context) {
+        val sharedPreferences = context.getSharedPreferences("daily_scores", Context.MODE_PRIVATE)
+        sharedPreferences.all.forEach { (key, value) ->
+            if (value is Int) {
+                dailyScores[key] = value
+            }
+        }
+    }
 
     fun addHabit(name: String, isDone: Boolean = false, category: String) {
         habits.add(Habit(name,  isDone, category))

@@ -20,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -37,6 +38,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.grindandgrow.models.MainViewModel
 import com.example.grindandgrow.navigation.ROUTE_HABIT
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,6 +49,8 @@ import com.example.grindandgrow.navigation.ROUTE_HABIT
 @Composable
 fun HomeScreen(nav: NavController, vm: MainViewModel) {
     val score = vm.getDisciplineScore()
+    val currentdate = SimpleDateFormat("dd MMM", Locale.getDefault()).format(Date())
+
 
     Scaffold(
         containerColor = Color(0xFFFFFFF0),
@@ -56,12 +62,11 @@ fun HomeScreen(nav: NavController, vm: MainViewModel) {
                     titleContentColor = Color.Black
                 ),
                 actions = {
-                    IconButton(onClick = {}) {
-                        Icon(
-                            Icons.Default.Menu,
-                            contentDescription = "Menu",
-                        )
-                    }
+                    Text(
+                        text = currentdate,
+                        color = Color.Black,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                 }
             )
         },
@@ -131,7 +136,7 @@ fun HomeScreen(nav: NavController, vm: MainViewModel) {
                 Spacer(modifier = Modifier.height(16.dp))
                 Text("Money Spent: Ksh ${vm.getBalance()}")
                 Spacer(modifier = Modifier.height(16.dp))
-                Text("Remaining Balance: Ksh ${vm.getRemain()}")
+                Text("Money Saving: Ksh ${vm.getRemain()}")
 
 
             }
